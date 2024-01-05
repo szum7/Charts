@@ -12,7 +12,7 @@ import Chart from 'chart.js/auto'
   ];
 
   new Chart(
-    document.getElementById('acquisitions'),
+    document.getElementById('example'),
     {
       type: 'bar',
       data: {
@@ -27,3 +27,8 @@ import Chart from 'chart.js/auto'
     }
   );
 })();
+
+
+// # Setup
+
+// <div style="width: 800px;"><canvas id="example"></canvas></div> // <-- use this in HTML

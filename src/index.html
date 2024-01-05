@@ -2,18 +2,37 @@
 <html>
 	<head>
 		<title>Charts</title>
+
         <link rel="stylesheet" href="style/main.css">
-        <script src="script/main.js"></script>
-		<style>
-		
-		</style>
+
+        <script src="script/chartsjs.min.4.4.1.js"></script>
 	</head>
 	<body>
-		<h1>HTML</h1>
-		<!-- <div style="width: 500px;"><canvas id="dimensions"></canvas></div><br/> -->
-        <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+        <canvas id="myChart"></canvas>
 
-        <!-- <script type="module" src="dimensions.js"></script> -->
-        <script type="module" src="acquisitions.js"></script>
+        <script>
+            const data = {
+                labels: ["HTML", "CSS", "JAVASCRIPT", "CHART.JS", "JQUERY", "BOOTSTRP", "END"],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.06
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {}
+            };
+
+
+            new Chart(
+                document.getElementById('myChart'),
+                config
+            );
+        </script>
 	</body>
 </head>
