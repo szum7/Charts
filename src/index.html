@@ -5,34 +5,10 @@
 
         <link rel="stylesheet" href="style/main.css">
 
-        <script src="script/chartsjs.min.4.4.1.js"></script>
+        <script src="script/chartsjs.min.4.4.1.js"></script> <!-- Current version for 2024-01-05 -->
 	</head>
 	<body>
         <canvas id="myChart"></canvas>
-
-        <script>
-            const data = {
-                labels: ["HTML", "CSS", "JAVASCRIPT", "CHART.JS", "JQUERY", "BOOTSTRP", "END"],
-                datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.06
-                }]
-            };
-
-            const config = {
-                type: 'line',
-                data: data,
-                options: {}
-            };
-
-
-            new Chart(
-                document.getElementById('myChart'),
-                config
-            );
-        </script>
+        <script src="charts/predictionLineChart.js"></script>
 	</body>
 </head>

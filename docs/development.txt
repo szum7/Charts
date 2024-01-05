@@ -1,2 +1,3 @@
-npm run dev
+# Development
+The project is a simple html-css-js project.
 
