@@ -1,3 +1,39 @@
+var incomes = [
+    { name: "Income",           amount: 100000,     from: null,         to: null },
+    { name: "Income to",        amount: 800000,     from: null,         to: "2024-02" },
+    { name: "Income from",      amount: 50000,      from: "2026-01",    to: null },
+    { name: "Income from-to",   amount: 30000,      from: "2024-04",    to: "2024-12" }
+];
+
+var expenses = [
+    { name: "Expense",          amount: 300000,     from: null,         to: null },
+    { name: "Expense to",       amount: 40000,      from: null,         to: "2024-05" },
+    { name: "Expense from",     amount: 150000,     from: "2025-02",    to: null },
+    { name: "Expense from-to",  amount: 50000,      from: "2025-02",    to: "2025-07" }
+];
+
+
+// @from - "yyyy-mm"
+// @to - "yyyy-mm"
+function createLabels(from, to) {
+    var labels = [];
+    var count = 0;
+    var yearCount = parseInt(to.substring(0, 4)) - parseInt(from.substring(0, 4));
+    var monthCount = parseInt(to.substring(5, 2)) - parseInt(from.substring(5, 2));
+    if (monthCount < 0) {
+        yearCount--;
+        monthCount = 12 - monthCount;
+
+    }
+}
+
+function getMonthDiff
+
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 	<head>
