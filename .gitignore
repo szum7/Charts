@@ -1,3 +1,6 @@
+# Custom
+src/inputs/prod
+
 # Logs
 logs
 *.log

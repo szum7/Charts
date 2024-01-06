@@ -1,7 +1,12 @@
 /* 
- * # ======
- * # README
- * # ======
+ * # ========
+ * #  README
+ * # ========
+ * 
+ * ## About
+ * 
+ * "Prediction" chart. Predicts the amount of cash you'll have each month based on incomes and expenses.
+ * Use an input.js file for the data input. See parameters documentation below.
  * 
  * ## Parameters
  * 
@@ -26,24 +31,9 @@
  * ## Results
  * 
  * @@Points
- *  description: In terms of wealth, a point marks the amount of cash I'm going to have at the end of that month (last day, last sec) after paying every expense and receiving every incomes in that month.
+ *  description: In terms of wealth, a point marks the amount of cash you're going to have at the end of that month (last day, last sec) after paying every expense and receiving every incomes in that month.
  * 
  */
-
-var incomes = [
-    { name: "", amount: 500, from: "2023-10", to: "2023-10" },
-];
-
-var expenses = [
-    { name: "", amount: 200, from: null, to: null },
-];
-
-var wealths = [
-    { name: "cash1", amount: 800 },
-];
-
-var now = "2022-05"; // "yyyy-mm"
-
 
 function createChartData(incomes, expenses, wealths, from, to) {
 
