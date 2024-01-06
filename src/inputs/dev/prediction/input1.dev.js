@@ -11,3 +11,4 @@ var wealths = [
 ];
 
 var now = "2022-05"; // "yyyy-mm"
+var to = "2026-01"; // "yyyy-mm"

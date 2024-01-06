@@ -46,7 +46,9 @@ function createChartData(incomes, expenses, wealths, from, to) {
             type: "line",
             label: main.incomeDatas[i].name,
             data: main.incomeDatas[i].points,
-            fill: false
+            fill: false,
+            borderColor: "rgba(111, 237, 76, 0.25)",
+            backgroundColor: "rgba(111, 237, 76, 0.25)"
         });
     }
 
@@ -55,7 +57,9 @@ function createChartData(incomes, expenses, wealths, from, to) {
             type: "line",
             label: main.expenseDatas[i].name,
             data: main.expenseDatas[i].points,
-            fill: false
+            fill: false,
+            borderColor: "rgba(207, 64, 64, 0.25)",
+            backgroundColor: "rgba(207, 64, 64, 0.25)"
         });
     }
 
@@ -130,9 +134,9 @@ function createPointsAndLabels(incomes, expenses, wealths, from, to) {
             }
         }
 
+        flowData.push(local);
         labels.push(dateToLiteral(currDate));
         wealthData.push(currWealth);
-        flowData.push(local);
 
         currDate = addAMonth(currDate);
     }
@@ -198,17 +202,17 @@ const getOrCreateTooltip = (chart) => {
 
     if (!tooltipEl) {
         tooltipEl = document.createElement('div');
-        tooltipEl.style.background = 'rgba(0, 0, 0, 0.7)';
+        tooltipEl.style.background = 'rgba(0, 0, 0, 0.6)';
         tooltipEl.style.borderRadius = '3px';
         tooltipEl.style.color = 'white';
-        tooltipEl.style.opacity = 1;
+        tooltipEl.style.opacity = 0.9;
         tooltipEl.style.pointerEvents = 'none';
         tooltipEl.style.position = 'absolute';
         tooltipEl.style.transform = 'translate(-50%, 0)';
         tooltipEl.style.transition = 'all .1s ease';
 
         const table = document.createElement('table');
-        table.style.margin = '0px';
+        table.style.margin = '10px';
 
         tooltipEl.appendChild(table);
         chart.canvas.parentNode.appendChild(tooltipEl);
@@ -256,13 +260,16 @@ const externalTooltipHandler = (context) => {
             span.style.background = colors.backgroundColor;
             span.style.borderColor = colors.borderColor;
             span.style.borderWidth = '2px';
+            span.style.borderRadius = '5px';
             span.style.marginRight = '10px';
             span.style.height = '10px';
             span.style.width = '10px';
             span.style.display = 'inline-block';
-
+            
             const tr = document.createElement('tr');
             tr.style.backgroundColor = 'inherit';
+            tr.style.textAlign = 'right';
+            tr.style.height = '25px';
             tr.style.borderWidth = 0;
 
             const td = document.createElement('td');
@@ -300,7 +307,7 @@ const externalTooltipHandler = (context) => {
 
 
 const el = document.getElementById("myChart");
-var chartData = createChartData(incomes, expenses, wealths, now, "2026-08");
+var chartData = createChartData(incomes, expenses, wealths, now, to);
 
 const data = {
     labels: chartData.labels,
@@ -317,13 +324,19 @@ const config = {
         plugins: {
             title: {
                 display: true,
-                text: 'Chart.js Line Chart - External Tooltips'
+                text: 'Prediction chart'
             },
             tooltip: {
                 enabled: false,
                 position: 'nearest',
                 external: externalTooltipHandler
-            }            
+            },
+            legend: {
+                labels: {
+                    // This more specific font property overrides the global property
+                    family: "'Courier New', Courier, monospace" // doesn't seem to work
+                }
+            }
         }
     }
 };
