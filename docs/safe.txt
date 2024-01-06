@@ -1,3 +1,49 @@
+
+var incomes = [
+    { name: "", amount: 20, from: "2022-04", to: "2022-08" },
+    { name: "", amount: 10, from: "2022-07", to: "2022-11" },
+];
+
+var expenses = [
+    { name: "", amount: 200, from: "2021-08", to: "2021-11" },
+    { name: "", amount: 40, from: "2022-06", to: "2022-09" },
+    { name: "", amount: 10, from: "2022-07", to: null },
+    { name: "", amount: 60, from: null, to: "2022-10" },
+];
+
+var wealths = [
+    { name: "cash1", amount: 400 },
+];
+
+var now = "2022-05"; // "yyyy-mm"
+
+
+----
+
+var incomes = [
+    { name: "Income", amount: 100000, from: null, to: null },
+    { name: "Income to", amount: 800000, from: null, to: "2024-02" },
+    { name: "Income from", amount: 50000, from: "2026-01", to: null },
+    { name: "Income from-to", amount: 30000, from: "2024-04", to: "2024-12" }
+];
+
+var expenses = [
+    { name: "Expense", amount: 300000, from: null, to: null },
+    { name: "Expense to", amount: 40000, from: null, to: "2024-05" },
+    { name: "Expense from", amount: 150000, from: "2025-02", to: null },
+    { name: "Expense from-to", amount: 50000, from: "2025-02", to: "2025-07" }
+];
+
+var wealths = [
+    { name: "cash1", amount: 5000000 },
+    { name: "cash2", amount: 1200000 }
+];
+
+var now = "2024-01"; // "yyyy-mm"
+
+----
+
+
 var incomes = [
     { name: "Income",           amount: 100000,     from: null,         to: null },
     { name: "Income to",        amount: 800000,     from: null,         to: "2024-02" },

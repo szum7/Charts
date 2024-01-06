@@ -1,23 +1,48 @@
+/* 
+ * # ======
+ * # README
+ * # ======
+ * 
+ * ## Parameters
+ * 
+ * @now
+ *  type: string
+ *  format: "yyyy-mm"
+ *  description: The current year and month.
+ * 
+ * @incomes
+ *  type: object[]
+ *  example: [{ name: "transaction", amount: 100, from: "2021-01", to: null }]
+ *  template: { name: "", amount: 0, from: "", to: "" }
+ * 
+ * @expenses
+ *  type: object[]
+ *  example: [{ name: "transaction", amount: 100, from: "2021-01", to: null }]
+ * 
+ * @wealth
+ *  description: The amount of wealth at the last second of the previous' month last day. In other words: (@now - 1s)
+ * 
+ * 
+ * ## Results
+ * 
+ * @@Points
+ *  description: In terms of wealth, a point marks the amount of cash I'm going to have at the end of that month (last day, last sec) after paying every expense and receiving every incomes in that month.
+ * 
+ */
+
 var incomes = [
-    { name: "Income", amount: 100000, from: null, to: null },
-    { name: "Income to", amount: 800000, from: null, to: "2024-02" },
-    { name: "Income from", amount: 50000, from: "2026-01", to: null },
-    { name: "Income from-to", amount: 30000, from: "2024-04", to: "2024-12" }
+    { name: "", amount: 500, from: "2023-10", to: "2023-10" },
 ];
 
 var expenses = [
-    { name: "Expense", amount: 300000, from: null, to: null },
-    { name: "Expense to", amount: 40000, from: null, to: "2024-05" },
-    { name: "Expense from", amount: 150000, from: "2025-02", to: null },
-    { name: "Expense from-to", amount: 50000, from: "2025-02", to: "2025-07" }
+    { name: "", amount: 200, from: null, to: null },
 ];
 
 var wealths = [
-    { name: "cash1", amount: 5000000 },
-    { name: "cash2", amount: 1200000 }
+    { name: "cash1", amount: 800 },
 ];
 
-var now = "2024-01"; // "yyyy-mm"
+var now = "2022-05"; // "yyyy-mm"
 
 
 function createChartData(incomes, expenses, wealths, from, to) {
@@ -49,7 +74,8 @@ function createChartData(incomes, expenses, wealths, from, to) {
         label: "Flow",
         data: main.flowData,
         fill: true,
-        backgroundColor: "rgb(75, 192, 192)"
+        backgroundColor: "rgb(75, 192, 192)",
+        order: 99
     });
 
     data.push({
@@ -57,8 +83,9 @@ function createChartData(incomes, expenses, wealths, from, to) {
         label: "Wealth",
         data: main.wealthData,
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.06
+        borderColor: "rgb(75, 50, 255)",
+        tension: 0.06,
+        order: 98
     });
 
     return {
@@ -283,27 +310,11 @@ const externalTooltipHandler = (context) => {
 
 
 const el = document.getElementById("myChart");
-var dd = createChartData(incomes, expenses, wealths, now, "2026-08");
+var chartData = createChartData(incomes, expenses, wealths, now, "2026-08");
 
 const data = {
-    labels: dd.labels, //["HTML", "CSS", "JAVASCRIPT", "CHART.JS", "JQUERY", "BOOTSTRP", "END"],
-    datasets: dd.data
-    // [
-    //     {
-    //         label: "My First Dataset",
-    //         data: [65, 59, 80, 81, -56, -55, 40],
-    //         fill: false,
-    //         borderColor: "rgb(75, 192, 192)",
-    //         tension: 0.06
-    //     },
-    //     {
-    //         label: "My First Dataset",
-    //         data: [65, 59, -56, -55, 40, 1, 2],
-    //         fill: false,
-    //         borderColor: "rgb(75, 192, 192)",
-    //         tension: 0.06
-    //     }
-    // ]
+    labels: chartData.labels,
+    datasets: chartData.data
 };
 
 const config = {
@@ -326,7 +337,6 @@ const config = {
         }
     }
 };
-
 
 new Chart(
     el,
