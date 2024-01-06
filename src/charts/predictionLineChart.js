@@ -1,4 +1,3 @@
-
 var incomes = [
     { name: "Income", amount: 100000, from: null, to: null },
     { name: "Income to", amount: 800000, from: null, to: "2024-02" },
@@ -20,14 +19,10 @@ var wealths = [
 
 var now = "2024-01"; // "yyyy-mm"
 
-console.log(createLabels(now, "2024-01"));
-console.log(createMainData(incomes, expenses, wealths, now, "2026-06"));
-
 
 function createChartData(incomes, expenses, wealths, from, to) {
 
-    var main = createMainData(incomes, expenses, wealths, from, to);
-    console.log(main);
+    var main = createPointsAndLabels(incomes, expenses, wealths, from, to);
 
     var data = [];
 
@@ -70,95 +65,6 @@ function createChartData(incomes, expenses, wealths, from, to) {
         labels: main.labels,
         data: data
     };
-
-    // var data = [];
-
-    // for (var i = 0; i < incomes.length; i++) {
-    //     var item = createTransactionData(incomes[i], from, to);
-    //     data.push({
-    //         type: "line",
-    //         label: incomes[i].name,
-    //         data: item,
-    //         fill: false
-    //     });
-    // }
-
-    // for (var i = 0; i < expenses.length; i++) {
-    //     var item = createTransactionData(expenses[i], from, to);
-    //     data.push({
-    //         type: "line",
-    //         label: expenses[i].name,
-    //         data: item,
-    //         fill: false
-    //     });
-    // }
-
-    // var main = createMainData(incomes, expenses, wealths, from, to);
-
-    // data.push({
-    //     type: "bar",
-    //     label: "Local flow",
-    //     data: main.barChartData,
-    //     fill: true,
-    //     backgroundColor: "rgb(75, 192, 192)"
-    // });
-
-    // data.push({
-    //     type: "line",
-    //     label: "Wealth",
-    //     data: main.data,
-    //     fill: false,
-    //     borderColor: "rgb(75, 192, 192)",
-    //     tension: 0.06
-    // });
-
-    // return {
-    //     labels: main.labels,
-    //     d: data
-    // };
-}
-
-/// @obj - object
-/// @from - "yyyy-mm"
-/// @to - "yyyy-mm"
-function createTransactionData(obj, from, to) {
-    var points = [];
-
-    var currD = strToDate(from);
-
-    while (currD < strToDate(to)) {
-
-        if (isInDataRange(currD, obj.from, obj.to)) {
-            points.push(obj.amount);
-        } else {
-            points.push(null);
-        }
-
-        currD = addAMonth(currD);
-    }
-
-    return points;
-}
-
-/// @currentDate - Date
-/// @rangeFrom - "yyyy-mm"
-/// @rangeTo - "yyyy-mm"
-function isInDataRange(currentDate, rangeFrom, rangeTo) {
-    return (!rangeFrom && !rangeTo) ||
-    (!rangeFrom && rangeTo && strToDate(rangeTo) >= currentDate) ||
-    (!rangeTo && rangeFrom && strToDate(rangeFrom) <= currentDate) ||
-    (rangeFrom && strToDate(rangeFrom) <= currentDate && strToDate(rangeTo) >= currentDate);
-}
-
-function initTransactionArray(incomes) {
-    var array = [];
-    for (var i = 0; i < incomes.length; i++) {
-        array.push({
-            name: incomes[i].name, 
-            points: []
-        });
-    }
-    return array;
 }
 
 /// @incomes - object[]
@@ -166,10 +72,7 @@ function initTransactionArray(incomes) {
 /// @wealths - object[]
 /// @from - "yyyy-mm"
 /// @to - "yyyy-mm"
-function createMainData(incomes, expenses, wealths, from, to) {
-    var startingWealth = wealths.reduce((accumulator, currentObject) => {
-        return accumulator + currentObject.amount;
-    }, 0);
+function createPointsAndLabels(incomes, expenses, wealths, from, to) {
 
     var wealthData = [];
     var labels = [];
@@ -177,7 +80,11 @@ function createMainData(incomes, expenses, wealths, from, to) {
     var expenseDatas = initTransactionArray(expenses);
     var flowData = [];
 
-    var currW = startingWealth;
+    var startingWealth = wealths.reduce((accumulator, currentObject) => {
+        return accumulator + currentObject.amount;
+    }, 0);
+
+    var currWealth = startingWealth;
     var currDate = strToDate(from);
 
     while (currDate < strToDate(to)) {
@@ -187,7 +94,7 @@ function createMainData(incomes, expenses, wealths, from, to) {
         for (var i = 0; i < incomes.length; i++) {
             var e = incomes[i];
             if (isInDataRange(currDate, e.from, e.to)) {
-                currW += e.amount;
+                currWealth += e.amount;
                 local += e.amount;
                 incomeDatas[i].points.push(e.amount);
             } else {
@@ -198,7 +105,7 @@ function createMainData(incomes, expenses, wealths, from, to) {
         for (var i = 0; i < expenses.length; i++) {
             var e = expenses[i];
             if (isInDataRange(currDate, e.from, e.to)) {
-                currW -= e.amount;
+                currWealth -= e.amount;
                 local -= e.amount;
                 expenseDatas[i].points.push(-e.amount);
             } else {
@@ -206,28 +113,8 @@ function createMainData(incomes, expenses, wealths, from, to) {
             }
         }
 
-        // incomes.forEach(e => {
-        //     if (isInDataRange(currDate, e.from, e.to)) {
-        //         currW += e.amount;
-        //         local += e.amount;
-        //         incomeData.push(e.amount);
-        //     } else {
-        //         incomeData.push(null);
-        //     }
-        // });
-
-        // expenses.forEach(e => {
-        //     if (isInDataRange(currDate, e.from, e.to)) {
-        //         currW -= e.amount;
-        //         local -= e.amount;
-        //         expenseData.push(e.amount);
-        //     } else {
-        //         expenseData.push(null);
-        //     }
-        // });
-
         labels.push(dateToLiteral(currDate));
-        wealthData.push(currW);
+        wealthData.push(currWealth);
         flowData.push(local);
 
         currDate = addAMonth(currDate);
@@ -242,32 +129,40 @@ function createMainData(incomes, expenses, wealths, from, to) {
     };
 }
 
-function createLabels(from, to) {
-
-    var count = monthsDiff(strToDate(from), strToDate(to));
-    console.log(count);
-    var labels = [];
-
-    for (var i = 0; i <= count; i++) {
-
-        var date = strToDate(from);
-        date.setMonth(date.getMonth() + i);
-
-        labels.push(date.getFullYear() + "-" + getMonthLiteral(date));
-    }
-
-    return labels;
+/// @currentDate - Date
+/// @rangeFrom - "yyyy-mm"
+/// @rangeTo - "yyyy-mm"
+function isInDataRange(currentDate, rangeFrom, rangeTo) {
+    return (!rangeFrom && !rangeTo) ||
+    (!rangeFrom && rangeTo && strToDate(rangeTo) >= currentDate) ||
+    (!rangeTo && rangeFrom && strToDate(rangeFrom) <= currentDate) ||
+    (rangeFrom && strToDate(rangeFrom) <= currentDate && strToDate(rangeTo) >= currentDate);
 }
 
+/// @transactions - object[]
+function initTransactionArray(transactions) {
+    var array = [];
+    for (var i = 0; i < transactions.length; i++) {
+        array.push({
+            name: transactions[i].name, 
+            points: []
+        });
+    }
+    return array;
+}
+
+/// @date - Date
 function addAMonth(date) {
     date.setMonth(date.getMonth() + 1);
     return date;
 }
 
+/// @date - Date
 function dateToLiteral(date) {
     return date.getFullYear() + "-" + getMonthLiteral(date);
 }
 
+/// @date - Date
 function getMonthLiteral(date) {
     var month = date.getMonth() + 1;
     if (month < 10) {
@@ -276,14 +171,7 @@ function getMonthLiteral(date) {
     return month;
 }
 
-function monthsDiff(date1, date2) {
-    var months;
-    months = (date2.getFullYear() - date1.getFullYear()) * 12;
-    months -= date1.getMonth();
-    months += date2.getMonth();
-    return months <= 0 ? 0 : months;
-}
-
+/// @str - string
 function strToDate(str) {
     return new Date(str + "-01");
 }
