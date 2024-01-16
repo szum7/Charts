@@ -6,7 +6,12 @@ use Shuchkin\SimpleXLSX;
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', true);
 
-require_once './lib/SimpleXLSX.php';
+require_once './backend/lib/SimpleXLSX.php';
+
+// @$sourcePath
+// @$sheetName
+
+echo $sourcePath;
 
 $incomes = [];
 $expenses = [];
@@ -14,17 +19,23 @@ $wealths = [];
 $now = "";
 $to = "";
 
-$file = './testExcel.xlsx';
-$xlsx = SimpleXLSX::parse($file);
+$xlsx = SimpleXLSX::parse($sourcePath);
 $currentRead = "";
 
 if ($xlsx) {
 
-    $dim = $xlsx->dimension();
-    $num_cols = $dim[0];
-    $num_rows = $dim[1];
+    $sheetIndex = 0;
+    for ($i = 0; $i < 30; $i++) {
+        if ($xlsx->sheetName($i) == $sheetName) {
+            $sheetIndex = $i;
+            echo $i;
+            break;
+        }
+    }
+
+    echo $sheetIndex;
     
-    foreach ($xlsx->rows() as $row) {
+    foreach ($xlsx->rows($sheetIndex) as $row) {
 
         // Store current reads
         if ($row[0] == "TRANSACTIONS" || 

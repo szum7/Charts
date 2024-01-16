@@ -10,13 +10,9 @@
 	<body>
         <!-- Canvas -->        
         <canvas id="myChart"></canvas>
-
-        <!-- Input -->
-        <!-- <script src="inputs/dev/prediction/input1.dev.js"></script> -->
-        <!-- <script src="inputs/prod/prediction/input1.prod.js"></script> -->
-        <?php require_once "./backend/readExcelToJs.php"; ?>
         
-        <!-- Program -->
+        <!-- Input and program -->
+        <?php require_once "./backend/programSwitch.php"; ?>
         <script src="src/charts/prediction.js"></script>
 	</body>
 </head>
