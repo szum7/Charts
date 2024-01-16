@@ -24,16 +24,14 @@ $currentRead = "";
 
 if ($xlsx) {
 
+    // Get sheet index
     $sheetIndex = 0;
     for ($i = 0; $i < 30; $i++) {
-        if ($xlsx->sheetName($i) == $sheetName) {
+        if ($xlsx->sheetName($i) == $sheetName) { // TODO temp solution until sheetNames can be iterated
             $sheetIndex = $i;
-            echo $i;
             break;
         }
     }
-
-    echo $sheetIndex;
     
     foreach ($xlsx->rows($sheetIndex) as $row) {
 
