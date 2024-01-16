@@ -1,3 +1,195 @@
+<?php
+header("Content-Type: text/html; charset=utf-8");
+
+use Shuchkin\SimpleXLSX;
+
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', true);
+
+require_once './lib/SimpleXLSX.php';
+
+$file = './testExcel.xlsx';
+
+//echo SimpleXLSX::parse('./testExcel.xlsx')->toHTML();
+
+// $xlsx = SimpleXLSX::parse($file);
+// print_r( $xlsx->rowsEx() );
+
+$incomes = [];
+$expenses = [];
+$wealths = [];
+$now = "";
+$to = "";
+
+$xlsx = SimpleXLSX::parse($file);
+$currentRead = "";
+
+if ($xlsx) {
+    echo '<pre>'.print_r($xlsx->sheetNames(), true).'</pre>';
+
+    echo '<table cellpadding="10">
+	<tr><td valign="top">';
+
+    // output worksheet 1 (index = 0)
+
+    $dim = $xlsx->dimension();
+    $num_cols = $dim[0];
+    $num_rows = $dim[1];
+
+    //echo '<h2>'.$xlsx->sheetName(0).'</h2>';
+    //echo '<table border=1>';
+    foreach ($xlsx->rows() as $row) {
+
+        // Store current reads
+        if ($row[0] == "TRANSACTIONS" || 
+            $row[0] == "WEALTH" || 
+            $row[0] == "PARAMS") {
+
+            $currentRead = $row[0];
+            echo $currentRead;
+        }
+
+        // Skip header
+        if ($row[0] == "Name" || 
+            empty($row[0])) {
+
+            continue;
+        }
+
+        if ($currentRead == "TRANSACTIONS") {
+
+            // Skip sub-transactions
+            if ($row[4] != "YES") {
+                continue;
+            }
+
+            // Work
+            $value = intval($row[1]);
+            if ($value < 0) {
+                array_push($expenses, array(
+                    'name' => $row[0],
+                    'amount' => $value,
+                    'from' => empty($row[2]) ? null : $row[2],
+                    'to' => empty($row[3]) ? null : $row[3]));
+            } else {
+                array_push($incomes, array(
+                    'name' => $row[0],
+                    'amount' => $value,
+                    'from' => empty($row[2]) ? null : $row[2],
+                    'to' => empty($row[3]) ? null : $row[3]));
+            }
+
+        } else if ($currentRead == "WEALTH") {
+
+            // Skip sub-transactions
+            if ($row[2] != "YES") {
+                continue;
+            }
+
+            // Work
+            array_push($wealths, array(
+                'name' => $row[0],
+                'amount' => intval($row[1])));
+
+        } else if ($currentRead == "PARAMS") {
+
+            if ($row[0] == "Now") { $now = $row[1]; echo $row[1]; }
+            if ($row[0] == "To") {  $to = $row[1]; }
+
+        }
+
+        //echo '<tr>';
+        //for ($i = 0; $i < $num_cols; $i ++) {
+            //echo '<td>' . ( ! empty($row[ $i ]) ? $row[ $i ] : '&nbsp;' ) . '</td>';
+
+        //}
+        //echo '</tr>';
+    }
+    //echo '</table>';
+
+    //echo '</td><td valign="top">';
+
+    // output worsheet 2 (index = 1)
+
+    // $dim = $xlsx->dimension(1);
+    // $num_cols = $dim[0];
+    // $num_rows = $dim[1];
+
+    // echo '<h2>'.$xlsx->sheetName(1).'</h2>';
+    // echo '<table border=1>';
+    // foreach ($xlsx->rows(1) as $r) {
+    //     echo '<tr>';
+    //     for ($i = 0; $i < $num_cols; $i ++) {
+    //         echo '<td>' . ( ! empty($r[ $i ]) ? $r[ $i ] : '&nbsp;' ) . '</td>';
+    //     }
+    //     echo '</tr>';
+    // }
+    // echo '</table>';
+
+    // echo '</td></tr></table>';
+} else {
+    echo SimpleXLSX::parseError();
+}
+
+
+$incomes = json_encode($incomes);
+$expenses = json_encode($expenses);
+$wealths = json_encode($wealths);
+
+echo "<script>var incomes = $incomes;</script>";
+echo "<script>var expenses = $expenses;</script>";
+echo "<script>var wealths = $wealths;</script>";
+echo "<script>var now = '$now';</script>";
+echo "<script>var to = '$to';</script>";
+
+echo "
+<script>
+    console.log(incomes);
+    console.log(expenses);
+    console.log(wealths);
+    console.log(now);
+    console.log(to);
+</script>";
+
+/*
+echo '<h1>rows() and rowsEx()</h1>';
+if ($xlsx) {
+    // ->rows()
+    echo '<h2>$xlsx->rows()</h2>';
+    echo '<pre>';
+    print_r($xlsx->rows());
+    echo '</pre>';
+
+    // ->rowsEx();
+    echo '<h2>$xlsx->rowsEx()</h2>';
+    echo '<pre>';
+    print_r($xlsx->rowsEx());
+    echo '</pre>';
+} else {
+    echo SimpleXLSX::parseError();
+}
+
+$data = array(
+    'name' => 'John',
+    'age' => 30,
+    'city' => 'New York'
+);
+
+$json = json_encode($data);
+echo "<script>var data = $json;</script>";
+
+foreach ($arr as &$value) {
+    $value = $value * 2;
+}
+*/
+
+
+
+
+
+--------
+
+
 
 var incomes = [
     { name: "", amount: 20, from: "2022-04", to: "2022-08" },

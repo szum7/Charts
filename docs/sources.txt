@@ -1,2 +1,4 @@
 # Sources
 https://www.chartjs.org
+https://www.chartjs.org/docs/latest/
+https://www.chartjs.org/docs/master/samples/information.html
