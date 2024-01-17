@@ -11,8 +11,6 @@ require_once './backend/lib/SimpleXLSX.php';
 // @$sourcePath
 // @$sheetName
 
-echo $sourcePath;
-
 $incomes = [];
 $expenses = [];
 $wealths = [];

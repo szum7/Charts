@@ -221,8 +221,13 @@ class SimpleXLSX
 
             $vZ = $filename;
         } else {
+            if (!file_exists($filename)) {
+                $this->error(0, 'File does not exist ' . $filename);
+
+                return false;
+            }
             if (!is_readable($filename)) {
-                $this->error(1, 'File not found ' . $filename);
+                $this->error(1, 'File not readable ' . $filename);
 
                 return false;
             }

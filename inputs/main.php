@@ -5,6 +5,7 @@
 // @$sheetName - leave it empty if js file
 
 $isSourceFromExcel = true;
-$sourcePath = "./inputs/dev/excelTemplate.xlsx";
+$sourcePath = "./inputs/prod/finances.xlsx";
 //$sourcePath = "inputs/prod/input1.prod.js";
-$sheetName = "Template";
+//$sourcePath = "inputs/prod/input1.prod.js";
+$sheetName = "Monthly2";
